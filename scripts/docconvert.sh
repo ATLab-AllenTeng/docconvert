@@ -109,7 +109,11 @@ cmd_install() {
   grn "  node $(node --version)、npm $(npm --version)"
 
   step 2 "npm 相依"
-  ( cd "${APP_DIR}" && npm install --no-audit --no-fund ) || die "npm install 失敗（看上方訊息）"
+  # ~/.npm 快取裡若有舊版 npm 留下的 root 檔案，npm 會直接中止；退回暫存快取再試一次（不碰使用者的快取）
+  ( cd "${APP_DIR}" && npm install --no-audit --no-fund ) \
+    || { ylw "  npm install 失敗，改用暫存快取重試（若是 ~/.npm 權限問題，可另外執行 sudo chown -R \$(id -u):\$(id -g) ~/.npm）"
+         ( cd "${APP_DIR}" && npm install --no-audit --no-fund --cache "$(mktemp -d "${TMPDIR:-/tmp}/docconvert-npm.XXXXXX")" ) \
+           || die "npm install 失敗（看上方訊息）"; }
   grn "  node_modules 就緒"
 
   step 3 "外部工具"

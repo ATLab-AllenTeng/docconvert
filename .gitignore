@@ -1,0 +1,21 @@
+# 秘密與本機狀態，不進版控
+.env
+node_modules/
+
+# Python venv（marker_tools）
+.venvs/
+.venv/
+__pycache__/
+
+# 真實測試檔（公司內部文件），只留目錄結構（.gitkeep）
+tests/fixtures/local/*
+!tests/fixtures/local/.gitkeep
+
+# 比對腳本的輸出
+.compare-out/
+
+# 轉換中繼檔（marker 失敗時保留供除錯）
+.convert-tmp/
+
+*.DS_Store
+.DS_Store

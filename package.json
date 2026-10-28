@@ -1,0 +1,34 @@
+{
+  "name": "docconvert",
+  "version": "0.1.0",
+  "description": "PDF/Word/PPT/試算表/HTML/郵件/圖片 → Markdown 的獨立轉換器（CLI 與 Node 程式介面）；模型（VLM）一律 opt-in",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "docconvert": "bin/docconvert.mjs"
+  },
+  "main": "lib/index.mjs",
+  "exports": {
+    ".": "./lib/index.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "convert": "node bin/docconvert.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ATLab-AllenTeng/docconvert.git"
+  },
+  "dependencies": {
+    "@joplin/turndown-plugin-gfm": "^1.0.67",
+    "@kenjiuno/msgreader": "^1.28.0",
+    "jszip": "^3.10.2",
+    "mailparser": "^3.9.20",
+    "mammoth": "^1.12.2",
+    "turndown": "^7.2.4",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}

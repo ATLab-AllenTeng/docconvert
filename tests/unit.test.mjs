@@ -95,6 +95,13 @@ describe('試算表', () => {
     assert.equal(t.split('\n')[2], '| 1 2 |  |  |')
     assert.match(t, /僅轉出前 2 列（原始共 3 列）/)
   })
+  test('rowsToTable：列數很多（20 萬列）也不會撐爆呼叫堆疊', () => {
+    const rows = Array.from({ length: 200_000 }, (_, i) => [`t${i}`, '3.7'])
+    rows.push(['x', 'y', 'z'])
+    const t = rowsToTable(rows, 300)
+    assert.equal(t.split('\n')[0], '| t0 | 3.7 |  |')
+    assert.match(t, /僅轉出前 300 列（原始共 200001 列）/)
+  })
   test('convertFile(xlsx)：每工作表一節、空工作表略過、--max-rows 生效、日期用 yyyy-mm-dd', async () => {
     const d = tmpDir()
     const p = await makeXlsx(resolve(d, '測試.xlsx'), {

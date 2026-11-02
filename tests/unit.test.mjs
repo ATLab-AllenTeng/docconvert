@@ -95,6 +95,13 @@ describe('試算表', () => {
     assert.equal(t.split('\n')[2], '| 1 2 |  |  |')
     assert.match(t, /僅轉出前 2 列（原始共 3 列）/)
   })
+  test('rowsToTable：去掉尾端全空的欄（工作表範圍延伸到 XFD 時不會爆量）', () => {
+    const pad = (r) => [...r, ...Array(16381).fill('')]
+    const t = rowsToTable([pad(['部門', '職級', '人數']), pad(['技術開發處', 'E5', '12']), pad(['', '', ''])], 300)
+    assert.equal(t.split('\n')[0], '| 部門 | 職級 | 人數 |')
+    assert.equal(t.split('\n')[1], '| --- | --- | --- |')
+    assert.ok(t.length < 200)
+  })
   test('rowsToTable：列數很多（20 萬列）也不會撐爆呼叫堆疊', () => {
     const rows = Array.from({ length: 200_000 }, (_, i) => [`t${i}`, '3.7'])
     rows.push(['x', 'y', 'z'])
